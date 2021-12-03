@@ -52,7 +52,7 @@
             </li>
 
             <!-- Messages Dropdown Menu -->
-            <li class="nav-item dropdown">
+            {{--<li class="nav-item dropdown">
                 <a class="nav-link" data-toggle="dropdown" href="#">
                     <i class="far fa-comments"></i>
                     <span class="badge badge-danger navbar-badge">3</span>
@@ -135,17 +135,17 @@
                     <div class="dropdown-divider"></div>
                     <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
                 </div>
-            </li>
+            </li>--}}
             <li class="nav-item">
                 <a class="nav-link" data-widget="fullscreen" href="#" role="button">
                     <i class="fas fa-expand-arrows-alt"></i>
                 </a>
             </li>
-            <li class="nav-item">
+            {{--<li class="nav-item">
                 <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
                     <i class="fas fa-th-large"></i>
                 </a>
-            </li>
+            </li>--}}
         </ul>
     </nav>
     <!-- /.navbar -->
@@ -193,31 +193,48 @@
                             <p>Главная</p>
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item has-treeview">
                         <a href="#" class="nav-link">
-                            <i class="nav-icon fas fa-tachometer-alt"></i>
+                            <i class="nav-icon fas fa-archive"></i>
                             <p>
-                                Dashboard
+                                Категории
                                 <i class="right fas fa-angle-left"></i>
                             </p>
                         </a>
                         <ul class="nav nav-treeview">
                             <li class="nav-item">
-                                <a href="../../index.html" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Dashboard v1</p>
+                                <a href="{{ route('categories.index') }}" class="nav-link">
+                                    <i class="fas fa-list nav-icon"></i>
+                                    <p>Список категорий</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="../../index2.html" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Dashboard v2</p>
+                                <a href="{{ route('categories.create') }}" class="nav-link">
+                                    <i class="nav-icon fas fa-edit"></i>
+                                    <p>Новая категория</p>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item has-treeview">
+                        <a href="#" class="nav-link">
+                            <i class="nav-icon fas fa-tags"></i>
+                            <p>
+                                Теги
+                                <i class="right fas fa-angle-left"></i>
+                            </p>
+                        </a>
+                        <ul class="nav nav-treeview">
+                            <li class="nav-item">
+                                <a href="{{ route('tags.index') }}" class="nav-link">
+                                    <i class="fas fa-list nav-icon"></i>
+                                    <p>Список тегов</p>
                                 </a>
                             </li>
                             <li class="nav-item">
-                                <a href="../../index3.html" class="nav-link">
-                                    <i class="far fa-circle nav-icon"></i>
-                                    <p>Dashboard v3</p>
+                                <a href="{{ route('tags.create') }}" class="nav-link">
+                                    <i class="nav-icon fas fa-edit"></i>
+                                    <p>Новый тег</p>
                                 </a>
                             </li>
                         </ul>
@@ -229,9 +246,38 @@
         <!-- /.sidebar -->
     </aside>
 
+
     <!-- Content Wrapper. Contains page content -->
-    @yield('content')
+    <div class="content-wrapper">
+        <div class="container-fluid mt-2">
+            <div class="row">
+                <div class="col-12">
+                    @if ($errors->any())
+                        <div class="alert alert-danger">
+                            <ul class="list-unstyled">
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+
+                    @if (session()->has('success'))
+                        <div class="alert alert-success">
+                            {{ session('success') }}
+                        </div>
+                    @endif
+                    @if (session()->has('success-del'))
+                        <div class="alert alert-warning">
+                            {{ session('success-del') }}
+                        </div>
+                    @endif
+                </div>
+            </div>
+        </div>
+     @yield('content')
     <!-- /.content-wrapper -->
+    </div>
 
     <footer class="main-footer">
         <div class="float-right d-none d-sm-block">
@@ -255,6 +301,16 @@
 <!-- AdminLTE App -->
 <script src="{{asset('/assets/admin/js/adminlte.min.js')}}"></script>
 <!-- AdminLTE for demo purposes -->
-<script src="{{asset('/assets/admin/js/demo.js')}}"></script>
+{{--<script src="{{asset('/assets/admin/js/demo.js')}}"></script>--}}
+<script>
+    $('.nav-sidebar a').each(function(){
+        let location = window.location.protocol + '//' + window.location.host + window.location.pathname;
+        let link = this.href;
+        if(link == location){
+            $(this).addClass('active');
+            $(this).closest('.has-treeview').addClass('menu-open');
+        }
+    });
+</script>
 </body>
 </html>
